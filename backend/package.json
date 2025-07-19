@@ -1,12 +1,10 @@
 {
-	"name": "zoomv2-node",
+	"name": "zoom-backend",
 	"version": "1.0.0",
 	"description": "",
-	"outDir": "./dist",
-	"rootDir": "./src",
 	"type": "module",
 	"scripts": {
-		"dev": "ts-node-esm src/index.ts",
+		"dev": "npx tsx watch --include \"./src/**/*\" src/index.ts",
 		"build": "tsc",
 		"start": "node dist/index.js"
 	},
@@ -17,12 +15,15 @@
 	"dependencies": {
 		"dotenv": "^17.2.0",
 		"express": "^5.1.0",
+		"express-useragent": "^1.0.15",
 		"node-fetch": "^3.3.2"
 	},
 	"devDependencies": {
 		"@types/express": "^5.0.3",
+		"@types/express-useragent": "^1.0.5",
 		"@types/node": "^24.0.15",
 		"ts-node": "^10.9.2",
+		"tsx": "^4.20.3",
 		"typescript": "^5.8.3"
 	}
 }

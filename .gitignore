@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+files/mac/15/
+files/mac/older/
+files/windows/
