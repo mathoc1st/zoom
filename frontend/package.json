@@ -1,0 +1,21 @@
+{
+  "name": "zoomv2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/platform": "^1.3.6",
+    "sass": "^1.89.2",
+    "stylelint-config-standard": "^38.0.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "platform": "^1.3.6"
+  }
+}
