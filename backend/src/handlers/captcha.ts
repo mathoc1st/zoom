@@ -3,7 +3,7 @@ import { CaptchaRequestBody, SiteVerifyRes } from "../types/captcha"
 
 export const verifyCaptcha = async (req: Request, res: Response) => {
 	const body = req.body as CaptchaRequestBody;
-	const token = body['cf-turnstile-response'];
+	const token = body["cf-turnstile-response"];
 	const ip = req.headers['cf-connecting-ip'];
 
 	if (!token) {
