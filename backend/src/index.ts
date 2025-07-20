@@ -11,8 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-// Path to the static website
-const staticPath = '../frontend/dist';
+const staticPath =  path.join(process.cwd(), '../frontend/dist');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,12 +20,10 @@ app.use(useragent.express());
 
 // Serve static files from 'public' folder
 app.use(express.static(staticPath));
-app.use('/schedule', express.static(staticPath));
 
-app.get('/schedule/*', (_, res) => {
+app.get('/schedule/89065232570', (req, res) => {
   res.sendFile(path.join(staticPath, 'index.html'));
 });
-
 
 const upload = multer(); // no storage needed if you're not uploading files
 
