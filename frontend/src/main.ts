@@ -99,7 +99,7 @@ protectedForm.addEventListener("submit", async function(e) {
 		urlParams.append(key, value.toString());
 	}
 
-	const response = await fetch(form.action || '/verify-captcha', {
+	const response = await fetch(form.action, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 		body: urlParams.toString(),
