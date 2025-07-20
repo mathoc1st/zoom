@@ -14,11 +14,11 @@ export const downloads = (req: Request, res: Response) => {
 
 	const agent = req.useragent
 
-	if (agent.isDesktop) {
+	if (!agent.isDesktop) {
 		return res.status(400).send('Invalid platform');
 	}
 	if (agent.isWindows) {
-		const filePath = path.join(process.cwd(), 'files', 'windows');
+		const filePath = path.join(process.cwd(), 'files', 'windows', filename);
 
 		res.download(filePath, filename, (err) => {
 			if (err) {
@@ -38,10 +38,10 @@ export const downloads = (req: Request, res: Response) => {
 		}
 
 		if (macVer.major >= 15) {
-			filePath = path.join(process.cwd(), 'files', 'mac', '15');
+			filePath = path.join(process.cwd(), 'files', 'mac', '15', filename);
 		}
 		if (macVer.major < 15) {
-			filePath = path.join(process.cwd(), 'files', 'mac', 'older');
+			filePath = path.join(process.cwd(), 'files', 'mac', 'older', filename);
 		}
 
 		return res.download(filePath, filename, (err) => {
