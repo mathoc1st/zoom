@@ -6,6 +6,10 @@ export const verifyCaptcha = async (req: Request, res: Response) => {
 	const token = body['cf-turnstile-response'];
 	const ip = req.headers['cf-connecting-ip'];
 
+	if (!token) {
+		return res.status(400).json({ success: false, error: 'Missing CAPTCHA token' });
+	}
+
 	const secret = process.env.TURNSTILE_SECRET;
 	const verifyUrl = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 

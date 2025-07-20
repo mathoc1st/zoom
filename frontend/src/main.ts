@@ -93,16 +93,9 @@ protectedForm.addEventListener("submit", async function(e) {
 	const form = e.target as HTMLFormElement;
 	const formData = new FormData(form);
 
-	// Convert FormData to URLSearchParams to get urlencoded string
-	const urlParams = new URLSearchParams();
-	for (const [key, value] of formData.entries()) {
-		urlParams.append(key, value.toString());
-	}
-
 	const response = await fetch(form.action, {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: urlParams.toString(),
+		body: formData,
 	});
 
 	const result = await response.json();

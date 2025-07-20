@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { verifyCaptcha } from './handlers/captcha.js';
 import { downloads } from './handlers/downloads.js';
 import useragent from 'express-useragent';
+import multer from 'multer';
 
 dotenv.config();
 
@@ -20,9 +21,10 @@ app.use(useragent.express());
 // Serve static files from 'public' folder
 app.use(express.static(staticPath));
 
+const upload = multer(); // no storage needed if you're not uploading files
 
 // Endpoint to verify cloud flare captcha
-app.post('/verify-captcha',  verifyCaptcha);
+app.post('/verify-captcha', upload.none(), verifyCaptcha);
 
 // Endpoint to serve zip file downloads
 app.get('/download/:filename', downloads);
