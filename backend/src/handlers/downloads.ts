@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import path from "path";
-import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 export const downloads = (req: Request, res: Response) => {
 	const token = req.query.token;
@@ -11,10 +11,10 @@ export const downloads = (req: Request, res: Response) => {
 
 	try {
 		jwt.verify(token, process.env.JWT_SECRET!);
-	} catch (err) {
-		if (err instanceof TokenExpiredError) {
+	} catch (err: any) {
+		if (err.name === 'TokenExpiredError') {
 			return res.status(403).json({ error: 'Token expired' });
-		} else if (err instanceof JsonWebTokenError) {
+		} else if (err.name === 'JsonWebTokenError') {
 			return res.status(403).json({ error: 'Token invalid' });
 		} else {
 			return res.status(403).json({ error: 'Token invalid' });
