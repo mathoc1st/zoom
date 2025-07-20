@@ -12,8 +12,8 @@ const PORT = 3000;
 // Path to the static website
 const staticPath = '../frontend/dist';
 
-// Middleware to parse JSON bodies (for captcha verification requests)
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(useragent.express());
 

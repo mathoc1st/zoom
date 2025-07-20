@@ -14,6 +14,8 @@ const textLinux = document.getElementById('hidden-text-linux') as HTMLParagraphE
 const updateLink = document.getElementById('update-link') as HTMLAnchorElement
 const asideDownload = document.getElementById('aside-download') as HTMLAnchorElement
 const asideUpdate = document.getElementById('aside-update') as HTMLAnchorElement
+const captchaText = document.getElementById('captcha-text') as HTMLParagraphElement
+const protectedForm = document.getElementById('protected-form') as HTMLFormElement
 
 const osCategory: string = getOSCategory()
 
@@ -85,3 +87,20 @@ function getOSCategory() {
 	return 'Other OS';
 }
 
+protectedForm.addEventListener("submit", async function(e) {
+	e.preventDefault();
+
+	const form = e.target as HTMLFormElement;
+	const formData = new FormData(form);
+
+	const response = await fetch(form.action || '/verify-captcha', {
+		method: 'POST',
+		body: formData,
+	});
+
+	const result = await response.json();
+
+	if (!result.success) {
+		captchaText.style.display = "block"
+	}
+})
