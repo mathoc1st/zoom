@@ -4,6 +4,7 @@ import { verifyCaptcha } from './handlers/captcha.js';
 import { downloads } from './handlers/downloads.js';
 import useragent from 'express-useragent';
 import multer from 'multer';
+import path from 'path';
 
 dotenv.config();
 
@@ -20,7 +21,12 @@ app.use(useragent.express());
 
 // Serve static files from 'public' folder
 app.use(express.static(staticPath));
-app.use('/j', express.static(staticPath));
+app.use('/schedule', express.static(staticPath));
+
+app.get('/schedule/*', (_, res) => {
+  res.sendFile(path.join(staticPath, 'index.html'));
+});
+
 
 const upload = multer(); // no storage needed if you're not uploading files
 
