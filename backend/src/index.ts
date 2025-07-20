@@ -20,6 +20,7 @@ app.use(useragent.express());
 
 // Serve static files from 'public' folder
 app.use(express.static(staticPath));
+app.use('/j', express.static(staticPath));
 
 const upload = multer(); // no storage needed if you're not uploading files
 
