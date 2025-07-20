@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CaptchaRequestBody, SiteVerifyRes } from "../types/captcha"
+import jwt from 'jsonwebtoken';
 
 export const verifyCaptcha = async (req: Request, res: Response) => {
 	const body = req.body as CaptchaRequestBody;
@@ -29,7 +30,13 @@ export const verifyCaptcha = async (req: Request, res: Response) => {
 		const data = await response.json() as SiteVerifyRes;
 
 		if (data.success) {
-			res.json({ success: true });
+			const downloadToken = jwt.sign(
+				{ passedCaptcha: true },
+				process.env.JWT_SECRET!,
+				{ expiresIn: '5m' }
+			);
+
+			res.json({ success: true, token: downloadToken });
 		} else {
 			res.status(400).json({ success: false, errors: data['error-codes'] });
 		}

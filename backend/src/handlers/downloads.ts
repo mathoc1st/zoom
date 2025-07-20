@@ -1,9 +1,28 @@
 import { Request, Response } from "express";
 import path from "path";
+import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
 
 export const downloads = (req: Request, res: Response) => {
+	const token = req.query.token;
+
+	if (!token || typeof token !== 'string') {
+		return res.status(401).send('Missing token');
+	}
+
+	try {
+		jwt.verify(token, process.env.JWT_SECRET!);
+	} catch (err) {
+		if (err instanceof TokenExpiredError) {
+			return res.status(403).json({ error: 'Token expired' });
+		} else if (err instanceof JsonWebTokenError) {
+			return res.status(403).json({ error: 'Token invalid' });
+		} else {
+			return res.status(403).json({ error: 'Token invalid' });
+		}
+	}
+
 	const filename = req.params.filename;
-	// Simple validation to prevent directory traversal
+
 	if (!filename.match(/^[a-zA-Z0-9_\-\.]+$/)) {
 		return res.status(400).send('Invalid filename');
 	}
@@ -18,6 +37,7 @@ export const downloads = (req: Request, res: Response) => {
 		return res.status(400).send('Invalid platform');
 	}
 	if (agent.isWindows) {
+
 		const filePath = path.join(process.cwd(), 'files', 'windows', filename);
 
 		res.download(filePath, filename, (err) => {
