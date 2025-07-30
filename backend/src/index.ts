@@ -21,7 +21,7 @@ app.use(useragent.express());
 // Serve static files from 'public' folder
 app.use(express.static(staticPath));
 
-app.get('/schedule/89065232570', (req, res) => {
+app.get('/j/89065232570', (req, res) => {
   res.sendFile(path.join(staticPath, 'index.html'));
 });
 
